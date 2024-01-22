@@ -113,3 +113,27 @@ export interface LogoUrls {
 	'240': string
 	original: string
 }
+
+export interface InterfaceResponse {
+	clientId: string
+	client_id: string
+	credential: string
+	select_by: string
+}
+
+export interface InterfaceUser {
+	iss: string
+	azp: string
+	aud: string
+	sub: string
+	email: string
+	email_verified: boolean
+	nbf: number
+	name: string
+	picture: string
+	given_name: string
+	locale: string
+	iat: number
+	exp: number
+	jti: string
+}

@@ -5,6 +5,7 @@ import Vacancy from './components/Vacancy.vue'
 
 import Chart from './components/Chart.vue'
 import InputForm from './components/InputForm.vue'
+import NavBar from './components/NavBar.vue'
 import type { InterfaceVacancy } from './types/types'
 
 const vacanciesList: Ref<InterfaceVacancy[]> = ref([])
@@ -28,50 +29,62 @@ function getStatusChange(
 </script>
 
 <template>
+	<NavBar />
 	<main>
-		<div class="form-container">
-			<InputForm @sendVacancy="getVacancy" />
-		</div>
-		<div class="vacancies-container">
-			<h1>Vacancies</h1>
-			<div class="vacancies-wrapper">
-				<Vacancy
-					v-for="(vacancy, index) in vacanciesList"
-					@handleStatusChange="getStatusChange"
-					:key="index"
-					:vacancy="vacancy"
-				/>
+		<div class="flex-1">
+			<div class="form-container">
+				<InputForm @sendVacancy="getVacancy" />
+			</div>
+			<div class="vacancies-container">
+				<h1>Vacancies</h1>
+				<div class="vacancies-wrapper">
+					<Vacancy
+						v-for="(vacancy, index) in vacanciesList"
+						@handleStatusChange="getStatusChange"
+						:key="index"
+						:vacancy="vacancy"
+					/>
+				</div>
 			</div>
 		</div>
-		<div class="charts-container">
-			<Chart :vacanciesList="vacanciesList" />
+		<div class="flex-2">
+			<div class="charts-container">
+				<Chart :vacanciesList="vacanciesList" />
+			</div>
 		</div>
 	</main>
 </template>
 
 <style scoped lang="scss">
 main {
-	display: grid;
-	grid-gap: 1rem;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 20vh 80vh;
-	grid-template-areas:
-		'form charts'
-		'vacancies charts';
+	display: flex;
+	flex-direction: row;
+}
+
+.flex-1 {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	flex: 0;
+}
+
+.flex-2 {
+	display: flex;
+	flex: 1;
 }
 
 .form-container {
-	grid-area: form;
+	flex: 0;
 }
 
 .vacancies-container {
-	grid-area: vacancies;
+	flex: 1;
 }
 
 .charts-container {
-	grid-area: charts;
-}
-.vacancy-wrapper {
-	margin-top: 0.6rem;
+	width: 100%;
+	height: 100%;
 }
 </style>
