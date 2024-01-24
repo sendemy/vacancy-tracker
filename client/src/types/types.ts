@@ -137,3 +137,14 @@ export interface InterfaceUser {
 	exp: number
 	jti: string
 }
+
+export interface InterfaceUserDB {
+	name: string
+	email: string
+	sub: string
+}
+
+export interface InterfaceVacancyDB {
+	text: string
+	user_id: number
+}

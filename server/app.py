@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, make_response, request
 from flask_cors import CORS
 from flask_marshmallow import Marshmallow
 # —------—
@@ -34,17 +34,21 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
     email = db.Column(db.String)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     vacancies = db.relationship('Vacancy', backref='user', lazy='dynamic')
+    sub = db.Column(db.String)
     # obj = db.Column(db.String)
 
 
 class UserSchema(Schema):
     id = fields.Integer()
+    name = fields.String()
     email = fields.String()
     date_created = fields.DateTime()
     vacancies = fields.List(fields.Nested(VacancySchema))
+    sub = fields.String()
     # obj = fields.List(fields.Dict())
 
 
@@ -57,13 +61,26 @@ vacancies_schema = VacancySchema(many=True)
 @app.route('/users')
 def users():
     users = User.query.all()
+    # response.headers['Custom-Header'] = 'Your custom value'
 
-    return users_schema.dump(users)
+    response = make_response(users_schema.dump(users))
+    response.headers['Content-Type'] = 'application/json; charset="utf-8"'
+    response.headers['asda'] = 'test123'
+
+    return response
+    # return users_schema.dump(users)
 
 
 @app.route('/users/<user_id>')
 def user(user_id):
     user = User.query.filter(User.id == user_id).first()
+
+    return user_schema.dump(user)
+
+
+@app.route('/users-sub/<sub>')
+def user_sub(sub):
+    user = User.query.filter(User.sub == sub).first()
 
     return user_schema.dump(user)
 
@@ -77,7 +94,8 @@ def create_user():
     except ValidationError as e:
         return jsonify({'message': 'Validation error', 'errors': e.messages}), 400
 
-    new_user = User(email=validated_data['email'])
+    new_user = User(
+        email=validated_data['email'], name=validated_data['name'], sub=validated_data['sub'])
     db.session.add(new_user)
     db.session.commit()
 
@@ -89,6 +107,13 @@ def vacancies():
     all_vacancies = Vacancy.query.all()
 
     return vacancies_schema.dump(all_vacancies)
+
+
+@app.route('/vacancies/<vacancy_id>')
+def vacancy(vacancy_id):
+    vacancy = Vacancy.query.filter(Vacancy.id == vacancy_id).first()
+
+    return vacancy_schema.dump(vacancy)
 
 
 @app.route('/user-vacancies/<user_id>')

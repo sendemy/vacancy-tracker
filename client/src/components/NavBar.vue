@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { type InterfaceUser } from '@/types/types'
-import { ref, type Ref } from 'vue'
-import { decodeCredential } from 'vue3-google-login'
+import { type InterfaceResponse } from '@/types/types'
+import Modal from './Modal.vue'
 
-const user: Ref<InterfaceUser | null> = ref(null)
+// const user: Ref<InterfaceUser | null> = ref(null)
 
-function callback(response) {
-	console.log(response)
-	user.value = decodeCredential(response.credential)
-	console.log(decodeCredential(response.credential))
+const { user } = defineProps(['user'])
+
+const emit = defineEmits(['sendUserData'])
+
+function getUserData(userData: InterfaceResponse) {
+	emit('sendUserData', userData)
 }
 </script>
 
@@ -77,8 +78,8 @@ function callback(response) {
 			<span v-if="user" class="profile-img">
 				<img :src="user.picture" alt="User Picture" width="32" height="32" />
 			</span>
-			<div v-else>
-				<GoogleLogin :callback="callback" />
+			<div class="hover" v-else>
+				<Modal @sendUserData="getUserData" />
 			</div>
 		</div>
 	</header>
@@ -129,7 +130,6 @@ header {
 	transition: 0.4s all ease-out;
 
 	&:hover {
-		cursor: pointer;
 		color: #3d0066;
 	}
 
@@ -146,5 +146,9 @@ header {
 		display: block;
 		border-radius: 1000rem;
 	}
+}
+
+.hover {
+	cursor: pointer;
 }
 </style>

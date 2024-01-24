@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { createVacancy } from '@/requests'
 import type { InterfaceVacancy } from '@/types/types'
-import { ref, watch, type Ref } from 'vue'
+import { ref, toRefs, watch, type Ref } from 'vue'
 
-const vacancyId: Ref<string | null> = ref('')
+const vacancyId: Ref<string | null> = ref(null)
 
-const emit = defineEmits(['sendVacancy'])
+const props = defineProps(['user'])
+
+const { user } = toRefs(props)
+
+const emit = defineEmits(['sendVacancyData'])
 
 function getVacancyId(url: string) {
 	const pattern = /vacancy\/(\d+)/
@@ -28,7 +33,7 @@ function handleSubmit(e: Event) {
 	}
 }
 
-watch([vacancyId], () => {
+watch([vacancyId, user], () => {
 	fetch(`https://api.hh.ru/vacancies/${vacancyId.value}`)
 		.then((response) => {
 			if (response.ok) {
@@ -41,7 +46,15 @@ watch([vacancyId], () => {
 			vacancy.added_at = new Date()
 			vacancy.status = 'waiting'
 
-			emit('sendVacancy', vacancy)
+			emit('sendVacancyData', vacancy)
+
+			if (vacancyId && user) {
+				console.log('in the scope', user.value)
+				createVacancy({
+					text: vacancy.description,
+					user_id: 4,
+				})
+			}
 		})
 		.catch((error) => {
 			console.log(error)

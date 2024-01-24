@@ -1,17 +1,33 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
 import './assets/main.css'
-import Vacancy from './components/Vacancy.vue'
-
 import Chart from './components/Chart.vue'
 import InputForm from './components/InputForm.vue'
 import NavBar from './components/NavBar.vue'
-import type { InterfaceVacancy } from './types/types'
+import Vacancy from './components/Vacancy.vue'
+import { createUser, getUserBySub } from './requests'
+import type { InterfaceUser, InterfaceVacancy } from './types/types'
 
 const vacanciesList: Ref<InterfaceVacancy[]> = ref([])
+const user: Ref<InterfaceUser | null> = ref(null)
 
-function getVacancy(vacancy: InterfaceVacancy) {
+function getVacancyData(vacancy: InterfaceVacancy) {
 	vacanciesList.value.push(vacancy)
+}
+
+async function getUserData(userData: InterfaceUser) {
+	user.value = userData
+
+	const isCreated = await getUserBySub(userData.sub)
+	console.log(isCreated)
+
+	if (!isCreated.sub) {
+		createUser({
+			name: userData.given_name,
+			email: userData.email,
+			sub: userData.sub,
+		})
+	}
 }
 
 function getStatusChange(
@@ -29,11 +45,11 @@ function getStatusChange(
 </script>
 
 <template>
-	<NavBar />
+	<NavBar :user="user" @sendUserData="getUserData" />
 	<main>
 		<div class="flex-1">
 			<div class="form-container">
-				<InputForm @sendVacancy="getVacancy" />
+				<InputForm :user="user" @sendVacancyData="getVacancyData" />
 			</div>
 			<div class="vacancies-container">
 				<h1>Vacancies</h1>

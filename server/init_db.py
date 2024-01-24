@@ -16,12 +16,10 @@ db.drop_all()
 #     'value': 123412412412411
 # }))
 
-user1 = User(email='xsfdsds@smth.com',
-             obj=dumps({'name': 'John Doe', 'email': 'john@example.com'}))
-user2 = User(email='uesr2user2@smth.com',
-             obj=dumps({'name': 'John Doe', 'email': 'john@example.com'}))
+user1 = User(email='xsfdsds@smth.com', name='John doe', sub='142415125125')
+user2 = User(email='uesr2user2@smth.com', name='John 2', sub='12121212')
 user3 = User(email='eeheheh_third_one@smth.com',
-             obj=dumps({'name': 'John Doe', 'email': 'john@example.com'}))
+             name='Someone third heh', sub='999999')
 
 vacancy1 = Vacancy(text='first vacancy text 123', user=user1)
 vacancy2 = Vacancy(text='second one', user=user2)
