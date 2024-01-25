@@ -41,17 +41,28 @@ watch([vacancyId, user], () => {
 			}
 			throw new Error('Incorrect URL.')
 		})
-		.then((data: InterfaceVacancy) => {
+		.then((data: InterfaceVacancy | any) => {
 			const vacancy = data
 			vacancy.added_at = new Date()
 			vacancy.status = 'waiting'
 
 			emit('sendVacancyData', vacancy)
 
-			if (vacancyId && user) {
+			if (vacancyId.value && user?.value) {
 				console.log('in the scope', user.value)
+				delete Object.assign(vacancy, {
+					['hh_id']: vacancy['id'],
+				})['id']
+				delete Object.assign(vacancy.salary, {
+					['from_salary']: vacancy['from'],
+				})['from']
+				delete Object.assign(vacancy.salary, { ['to_salary']: vacancy['to'] })[
+					'to'
+				]
+				console.log(vacancy)
+
 				createVacancy({
-					text: vacancy.description,
+					...vacancy,
 					user_id: 4,
 				})
 			}

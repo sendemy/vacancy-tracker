@@ -74,9 +74,9 @@ function getUserData(userData: InterfaceResponse) {
 			<div>analytics</div>
 		</div>
 		<div class="profile-container">
-			<div v-if="user" class="profile-title">{{ user.given_name }}</div>
+			<div v-if="user" class="profile-title">{{ user.name }}</div>
 			<span v-if="user" class="profile-img">
-				<img :src="user.picture" alt="User Picture" width="32" height="32" />
+				<img :src="user.image" alt="User Picture" width="32" height="32" />
 			</span>
 			<div class="hover" v-else>
 				<Modal @sendUserData="getUserData" />

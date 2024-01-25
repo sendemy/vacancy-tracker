@@ -1,4 +1,4 @@
-import type { InterfaceUserDB, InterfaceVacancyDB } from '@/types/types'
+import type { InterfaceUserDB } from '@/types/types'
 
 const API_URL = 'http://127.0.0.1:5000'
 
@@ -108,7 +108,7 @@ export function createUser(data: InterfaceUserDB) {
 	})
 }
 
-export function createVacancy(data: InterfaceVacancyDB) {
+export function createVacancy(data: any) {
 	return fetch(`${API_URL}/create-vacancy`, {
 		method: 'POST',
 		headers: {

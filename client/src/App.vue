@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 import './assets/main.css'
 import Chart from './components/Chart.vue'
 import InputForm from './components/InputForm.vue'
 import NavBar from './components/NavBar.vue'
 import Vacancy from './components/Vacancy.vue'
-import { createUser, getUserBySub } from './requests'
+import { createUser, getUserBySub, getUserVacancies } from './requests'
 import type { InterfaceUser, InterfaceVacancy } from './types/types'
 
 const vacanciesList: Ref<InterfaceVacancy[]> = ref([])
-const user: Ref<InterfaceUser | null> = ref(null)
+const user: Ref<InterfaceUser | null | any> = ref(null)
 
 function getVacancyData(vacancy: InterfaceVacancy) {
 	vacanciesList.value.push(vacancy)
@@ -26,7 +26,11 @@ async function getUserData(userData: InterfaceUser) {
 			name: userData.given_name,
 			email: userData.email,
 			sub: userData.sub,
+			image: userData.picture,
 		})
+	} else {
+		user.value = await getUserBySub(isCreated.sub)
+		// vacanciesList.value = await getUserVacancies(user.value.id)
 	}
 }
 
@@ -34,14 +38,25 @@ function getStatusChange(
 	id: string,
 	status: 'waiting' | 'accepted' | 'rejected'
 ) {
-	const obj = vacanciesList.value.find((v: InterfaceVacancy) => v.id === id)
+	// const obj = vacanciesList.value.find((v: InterfaceVacancy) => v.id === id)
 
-	if (obj) {
-		obj.status = status
-	}
+	// if (obj) {
+	// 	obj.status = status
+	// }
+
+	vacanciesList.value.find((v: InterfaceVacancy) => v.id === id)!.status =
+		status
 
 	console.log(vacanciesList.value)
 }
+
+watch([vacanciesList], () => {
+	console.log('vacancies change in APP.VUE')
+})
+
+watch([user], async () => {
+	vacanciesList.value = await getUserVacancies(user.value.id)
+})
 </script>
 
 <template>

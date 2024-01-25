@@ -12,54 +12,7 @@ import VChart, { THEME_KEY } from 'vue-echarts'
 
 const { vacanciesList } = defineProps(['vacanciesList'])
 
-// if (vacanciesList) {
-// 	console.log('got the thing')
-// 	console.log(vacanciesList)
-// }
-
-// const chartData = ref([
-// 	{ value: 0, name: 'Accepted' },
-// 	{ value: 0, name: 'Rejected' },
-// 	{ value: 0, name: 'Waiting' },
-// ])
-
-watch([vacanciesList], () => {
-	console.log('vacanciesList CHANGED')
-	// console.log(vacanciesList)
-	const tempData = [
-		{ value: 0, name: 'Accepted' },
-		{ value: 0, name: 'Rejected' },
-		{ value: 0, name: 'Waiting' },
-	]
-
-	for (const vacancy of vacanciesList) {
-		// switch (vacancy.status) {
-		// 	case 'accepted':
-		// 		tempData[0].value++
-		// 		console.log(vacancy)
-		// 	case 'rejected':
-		// 		tempData[1].value++
-		// 		console.log(vacancy)
-		// 	case 'waiting':
-		// 		tempData[2].value++
-		// 		console.log(vacancy)
-		// }
-		if (vacancy.status === 'accepted') {
-			tempData[0].value++
-			console.log(vacancy)
-		} else if (vacancy.status === 'rejected') {
-			tempData[1].value++
-			console.log(vacancy)
-		} else if (vacancy.status === 'waiting') {
-			tempData[2].value++
-			console.log(vacancy)
-		}
-	}
-
-	console.log('Temp data: ', tempData)
-
-	option.value.series[0].data = tempData
-})
+// const vacanciesList = ref(props.vacanciesList)
 
 use([
 	CanvasRenderer,
@@ -106,10 +59,49 @@ const option = ref({
 		},
 	],
 })
+
+watch([vacanciesList], () => {
+	console.log('vacanciesList CHANGED')
+	// console.log(vacanciesList)
+	const tempData = [
+		{ value: 0, name: 'Accepted' },
+		{ value: 0, name: 'Rejected' },
+		{ value: 0, name: 'Waiting' },
+	]
+
+	for (const vacancy of vacanciesList) {
+		// switch (vacancy.status) {
+		// 	case 'accepted':
+		// 		tempData[0].value++
+		// 		console.log(vacancy)
+		// 	case 'rejected':
+		// 		tempData[1].value++
+		// 		console.log(vacancy)
+		// 	case 'waiting':
+		// 		tempData[2].value++
+		// 		console.log(vacancy)
+		// }
+		if (vacancy.status === 'accepted') {
+			tempData[0].value++
+			console.log(vacancy)
+		} else if (vacancy.status === 'rejected') {
+			tempData[1].value++
+			console.log(vacancy)
+		} else if (vacancy.status === 'waiting') {
+			tempData[2].value++
+			console.log(vacancy)
+		}
+	}
+
+	console.log('Temp data: ', tempData)
+
+	option.value.series[0].data = tempData
+})
 </script>
 
 <template>
 	<v-chart class="chart" :option="option" autoresize />
+	<div>{{ JSON.stringify(vacanciesList.map((v) => [v.name, v.status])) }}</div>
 </template>
 
 <style scoped lang="scss">

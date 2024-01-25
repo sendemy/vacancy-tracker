@@ -1,4 +1,14 @@
+import datetime
+
+from app import db
 from marshmallow import Schema, fields
+
+# class Vacancy(db.Model):
+#     __tablename__ = 'vacancies'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     date_added = db.Column(db.DateTime, default=datetime.utcnow)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
 class SalarySchema(Schema):
@@ -111,3 +121,55 @@ class JobVacancySchema(Schema):
     languages = fields.List(fields.String())
     added_at = fields.DateTime()
     status = fields.String()
+
+
+class Vacancy(db.Model):
+    id = db.Column(db.String, primary_key=True)
+    premium = db.Column(db.Boolean)
+    billing_type = db.Column(db.JSON)
+    relations = db.Column(db.JSON)
+    name = db.Column(db.String)
+    insider_interview = db.Column(db.String, nullable=True)
+    response_letter_required = db.Column(db.Boolean)
+    area = db.Column(db.JSON)
+    salary = db.Column(db.JSON)
+    type = db.Column(db.JSON)
+    address = db.Column(db.JSON)
+    allow_messages = db.Column(db.Boolean)
+    experience = db.Column(db.JSON)
+    schedule = db.Column(db.JSON)
+    employment = db.Column(db.JSON)
+    department = db.Column(db.String, nullable=True)
+    contacts = db.Column(db.String, nullable=True)
+    description = db.Column(db.String)
+    branded_description = db.Column(db.String, nullable=True)
+    vacancy_constructor_template = db.Column(db.String, nullable=True)
+    key_skills = db.Column(db.JSON)
+    accept_handicapped = db.Column(db.Boolean)
+    accept_kids = db.Column(db.Boolean)
+    archived = db.Column(db.Boolean)
+    response_url = db.Column(db.String, nullable=True)
+    specializations = db.Column(db.JSON)
+    professional_roles = db.Column(db.JSON)
+    code = db.Column(db.String, nullable=True)
+    hidden = db.Column(db.Boolean)
+    quick_responses_allowed = db.Column(db.Boolean)
+    driver_license_types = db.Column(db.JSON)
+    accept_incomplete_resumes = db.Column(db.Boolean)
+    employer = db.Column(db.JSON)
+    published_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime)
+    initial_created_at = db.Column(db.DateTime)
+    negotiations_url = db.Column(db.String, nullable=True)
+    suitable_resumes_url = db.Column(db.String, nullable=True)
+    apply_alternate_url = db.Column(db.String)
+    has_test = db.Column(db.Boolean)
+    test = db.Column(db.String, nullable=True)
+    alternate_url = db.Column(db.String)
+    working_days = db.Column(db.JSON)
+    working_time_intervals = db.Column(db.JSON)
+    working_time_modes = db.Column(db.JSON)
+    accept_temporary = db.Column(db.Boolean)
+    languages = db.Column(db.JSON)
+    added_at = db.Column(db.DateTime)
+    status = db.Column(db.String)

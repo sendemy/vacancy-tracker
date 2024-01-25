@@ -1,5 +1,5 @@
 export interface InterfaceVacancy {
-	id: string
+	id?: string
 	premium: boolean
 	billing_type: BillingType
 	relations: any[]
@@ -142,6 +142,7 @@ export interface InterfaceUserDB {
 	name: string
 	email: string
 	sub: string
+	image: string
 }
 
 export interface InterfaceVacancyDB {
