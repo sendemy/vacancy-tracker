@@ -1,8 +1,8 @@
 
 # Table of contents
 * [Project Info](#project-info)
+   * [Tools used](#tools-used)
 * [Project Setup](#project-setup)
-    * [Tools used](#tools-used)
 
 # Project info
 Job Vacancies Tracker is my pet project made with the purpose of simplify job finding for me and other people. Currently supports ONLY hh.ru URLs.
